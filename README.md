@@ -1,6 +1,6 @@
 # Facial Assymetry SAAS (Web App)
 
-A full React + TypeScript SaaS-style web project built from your original prototype direction.
+A full React + TypeScript SaaS-style web project built from original prototype direction.
 
 ## Core modules
 
