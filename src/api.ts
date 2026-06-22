@@ -1,3 +1,4 @@
+// Railway API endpoint
 const API_URL = 'https://facial-analysis-api-production.up.railway.app/api';
 
 function getToken(): string | null {
