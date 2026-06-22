@@ -137,7 +137,8 @@ function useAuthState() {
     const data = await apiLogin(username, password);
     if (data.token) {
       localStorage.setItem("token", data.token);
-      localStorage.setItem("fas_user", JSON.stringify(data.user));
+      const userWithDefaults = { ...data.user, avatarUrl: data.user.avatarUrl || "https://ui-avatars.com/api/?name=" + data.user.name };
+localStorage.setItem("fas_user", JSON.stringify(userWithDefaults));
       setUser(data.user);
       return { ok: true as const };
     }
@@ -148,7 +149,8 @@ function useAuthState() {
     const data = await apiRegister(payload.name, payload.email, payload.username, payload.password);
     if (data.token) {
       localStorage.setItem("token", data.token);
-      localStorage.setItem("fas_user", JSON.stringify(data.user));
+      const userWithDefaults = { ...data.user, avatarUrl: data.user.avatarUrl || "https://ui-avatars.com/api/?name=" + data.user.name };
+localStorage.setItem("fas_user", JSON.stringify(userWithDefaults));
       setUser(data.user);
       return { ok: true as const };
     }
