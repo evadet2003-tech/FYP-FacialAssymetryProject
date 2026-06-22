@@ -139,7 +139,7 @@ function useAuthState() {
       localStorage.setItem("token", data.token);
       const userWithDefaults = { ...data.user, avatarUrl: data.user.avatarUrl || "https://ui-avatars.com/api/?name=" + data.user.name };
 localStorage.setItem("fas_user", JSON.stringify(userWithDefaults));
-      setUser(data.user);
+      setUser(userWithDefaults);
       return { ok: true as const };
     }
     return { ok: false as const, message: data.message ?? "Invalid credentials." };
@@ -151,7 +151,7 @@ localStorage.setItem("fas_user", JSON.stringify(userWithDefaults));
       localStorage.setItem("token", data.token);
       const userWithDefaults = { ...data.user, avatarUrl: data.user.avatarUrl || "https://ui-avatars.com/api/?name=" + data.user.name };
 localStorage.setItem("fas_user", JSON.stringify(userWithDefaults));
-      setUser(data.user);
+      setUser(userWithDefaults);
       return { ok: true as const };
     }
     return { ok: false as const, message: data.message ?? "Unable to create account." };
