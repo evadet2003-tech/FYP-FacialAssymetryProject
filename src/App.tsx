@@ -311,7 +311,7 @@ function drawOverlay(
 }
 
 const LANDING_IMG_HERO =
-  "https://faceshapelab.com/wp-content/uploads/2026/03/Face-Shape-Lab-2.png";
+  "https://miro.medium.com/0*qvjSQDAAgrQXc06F.jpg";
 const LANDING_IMG_WORKFLOW =
   "https://www.face-symmetry-test.com/static/images/blog/person_with_face_analysis.png";
 const LANDING_IMG_TEAMS =
