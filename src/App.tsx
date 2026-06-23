@@ -44,7 +44,7 @@ import type { AnalysisResult } from "./lib/analysis";
 import { detectFaceMesh } from "./lib/faceMesh";
 import type { FacePoint } from "./lib/faceMesh";
 import { compressDataUrlForStorage, isQuotaExceededError } from "./lib/storageImage";
-import { apiLogin, apiRegister, apiSaveSession, apiGetSessions } from "./api";
+import { apiLogin, apiRegister, apiSaveSession, apiGetSessions, apiDeleteSession } from "./api";
 
 const createPlotlyComponent =
   ((plotlyFactory as unknown as { default?: (p: unknown) => unknown }).default ?? plotlyFactory) as (
@@ -1709,11 +1709,29 @@ function HistoryPage() {
     })();
   }, []);
 
-  const onClearAll = () => {
+  const onClearAll = async () => {
     if (!userSessions.length) return;
     if (!window.confirm("Remove all saved sessions? This cannot be undone.")) return;
+    await Promise.all(userSessions.map((s) => apiDeleteSession(s.id)));
     clearAllHistory();
     setUserSessions([]);
+  };
+
+  const onDeleteSession = async (sessionId: string) => {
+    if (!window.confirm("Delete this session?")) return;
+    await apiDeleteSession(sessionId);
+    setUserSessions((prev) => prev.filter((s) => s.id !== sessionId));
+  };
+
+  const downloadCsv = (session: SavedSession) => {
+    const csv = exportResultCsv(session.result);
+    const blob = new Blob([csv], { type: "text/csv" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `facial-analysis-${session.id}.csv`;
+    link.click();
+    URL.revokeObjectURL(url);
   };
 
   return (
@@ -1738,6 +1756,10 @@ function HistoryPage() {
             <p>Score: {session.result.overallScore}</p>
             <p>Severity: {session.result.severity}</p>
             <p>Primary: {session.result.worstRegion}</p>
+            <div className="actions left">
+              <button type="button" onClick={() => downloadCsv(session)}>Download CSV</button>
+              <button type="button" className="button danger" onClick={() => onDeleteSession(session.id)}>Delete</button>
+            </div>
           </article>
         ))}
       </div>
